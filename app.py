@@ -6,6 +6,9 @@ from datetime import datetime
 import requests
 from flask import Flask, request
 
+if sys.version_info[0] >= 3:
+    unicode = str
+
 app = Flask(__name__)
 
 
