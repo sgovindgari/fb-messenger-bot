@@ -73,8 +73,20 @@ def send_message(recipient_id, message_text):
         },
         "message": {
             "text": message_text
-        }
+        },
     })
+    r = requests.post("https://graph.facebook.com/v4.0/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
+
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "sender_action": "mark_seen",
+    })
+
     r = requests.post("https://graph.facebook.com/v4.0/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
         log(r.status_code)
