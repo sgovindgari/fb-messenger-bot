@@ -43,7 +43,8 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    send_message(sender_id, "roger that!")
+                    send_message(sender_id, "Welcome to Pixy. We help you lower and pay off your student loan and credit card debt faster.")
+                    send_message_with_button(sender_id, "To get started, please connect your loan/bank accounts", "https://peaceful-fortress-19275.herokuapp.com/", "Take me in")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -55,6 +56,40 @@ def webhook():
                     pass
 
     return "ok", 200
+
+def send_message_with_button(recipient_id, message_text, button_url, button_text):
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message":{
+            "attachment":{
+                "type":"template",
+                    "payload":{
+                        "template_type":"button",
+                        "text":message_text,
+                        "buttons":[{
+                            "type":"web_url",
+                            "url":button_url,
+                            "title":button_text
+                        }]
+                    }
+            }
+        }
+    })
+
+    r = requests.post("https://graph.facebook.com/v4.0/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
 
 
 def send_message(recipient_id, message_text):
