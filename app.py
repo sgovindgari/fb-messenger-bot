@@ -51,8 +51,11 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    send_message(sender_id, "Welcome to Pixy. We help you lower and pay off your student loan and credit card debt faster.")
-                    add_bank_account(sender_id)
+                    if message_text.contains('options'):
+                        send_all_options(sender_id)
+                    else:
+                        send_message(sender_id, "Welcome to Pixy. We help you lower and pay off your student loan and credit card debt faster.")
+                        add_bank_account(sender_id)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -61,9 +64,75 @@ def webhook():
                     pass
 
                 if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
-                    pass
+                    if messaging_event['payload'] is not None:
+                        
+                        event = messaging_event['postback']['payload']
+                        sender_id = messaging_event['sender_id']
+                        
+                        if event == 'analyze':
+                            insights(sender_id)
+                        elif event == 'habits':
+                            habit_forming(sender_id)
+                        elif event == 'refinance':
+                            refinance_loan(sender_id)
+                        else:
+                            pass
+
 
     return "ok", 200
+
+def send_all_options(recipient_id):
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message":{
+            "attachment":{
+                "type":"template",
+                    "payload":{
+                        "template_type":"generic",
+                        "elements":[
+                        "buttons":[{
+                            "type":"web_url",
+                            "url":"https://peaceful-fortress-19275.herokuapp.com/",
+                            "title":"Add account",
+                            "webview_height_ratio": "tall",
+                        },
+                        {
+                            "type":"postback",
+                            "title":"Analyze expenses",
+                            "payload": "analyze",
+                        },
+                        {
+                            "type":"postback",
+                            "title":"Show spending habits",
+                            "payload": "habits"
+
+                        },
+                        {
+                            "type":"postback",
+                            "title":"Refinance Debt",
+                            "payload": "refinance"
+
+                        }]
+                    ]
+                }
+            }
+        }
+    })
+
+    r = requests.post("https://graph.facebook.com/v4.0/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
 
 
 def add_bank_account(recipient_id):
