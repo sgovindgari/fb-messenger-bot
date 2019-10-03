@@ -161,7 +161,10 @@ def show_current_liabilities(recipient_id):
 
     send_message(
         recipient_id,
-        "Your current credit card debt is " + str(cc_debt) + " and your student loan is " + str(origination_principal_amount - ytd_principal_paid)
+        "Your current credit card debt is " + 
+        str(cc_debt) + 
+        " and your student loan is " + 
+        str(origination_principal_amount - ytd_principal_paid)
     )
 
 
