@@ -79,7 +79,7 @@ def add_bank_account(recipient_id):
                         "template_type":"generic",
                         "elements":[{
                             "title":"Hi!",
-                            "image_url":"https://drive.google.com/file/d/13xIm-oBPI6xj6NIXS4QqQ-fxXqEQAzls/view?usp=sharing",
+                            "image_url":"https://s3.amazonaws.com/gethyped.io/pixycover.png",
                             "subtitle":"We help you manage your student loans and credit card debt.",
                             "default_action": {
                                 "type": "web_url",
@@ -89,12 +89,8 @@ def add_bank_account(recipient_id):
                         "buttons":[{
                             "type":"web_url",
                             "url":"https://peaceful-fortress-19275.herokuapp.com/",
-                            "title":"Add account"
-                        },
-                        {
-                            "type":"postback",
-                            "title":"Start Chatting",
-                            "payload":"DEVELOPER_DEFINED_PAYLOAD"     
+                            "title":"Add account",
+                            "webview_height_ratio": "tall",
                         }]
                     }]
                 }
