@@ -51,9 +51,11 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    if message_text.contains('options'):
+                    if 'options' in message_text:
+                        log('called options')
                         send_all_options(sender_id)
                     else:
+                        log(message_text)
                         send_message(sender_id, "Welcome to Pixy. We help you lower and pay off your student loan and credit card debt faster.")
                         add_bank_account(sender_id)
 
