@@ -100,31 +100,40 @@ def send_all_options(recipient_id):
                     "payload":{
                         "template_type":"generic",
                         "elements":[
-                        "buttons":[{
-                            "type":"web_url",
-                            "url":"https://peaceful-fortress-19275.herokuapp.com/",
-                            "title":"Add account",
-                            "webview_height_ratio": "tall",
-                        },
-                        {
-                            "type":"postback",
-                            "title":"Analyze expenses",
-                            "payload": "analyze",
-                        },
-                        {
-                            "type":"postback",
-                            "title":"Show spending habits",
-                            "payload": "habits"
-
-                        },
-                        {
-                            "type":"postback",
-                            "title":"Refinance Debt",
-                            "payload": "refinance"
-
+                            {
+                                "title":"Welcome!",
+                                "image_url":"https://s3.amazonaws.com/gethyped.io/pixycover.png",
+                                "subtitle":"We help you manage your student loans and credit card debt.",
+                                "default_action": {
+                                    "type": "web_url",
+                                    "url": "https://peaceful-fortress-19275.herokuapp.com/",
+                                    "webview_height_ratio": "tall",
+                                },
+                            "buttons":[
+                                {
+                                    "type":"web_url",
+                                    "url":"https://peaceful-fortress-19275.herokuapp.com/",
+                                    "title":"Add account",
+                                    "webview_height_ratio": "tall",
+                                },
+                                {
+                                    "type":"postback",
+                                    "title":"Analyze expenses",
+                                    "payload": "analyze",
+                                },
+                                {
+                                    "type":"postback",
+                                    "title":"Show spending habits",
+                                    "payload": "habits",
+                                },
+                                {
+                                    "type":"postback",
+                                    "title":"Refinance Debt",
+                                    "payload": "refinance",
+                                }
+                            ]
                         }]
-                    ]
-                }
+                    }
             }
         }
     })
