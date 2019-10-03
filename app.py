@@ -51,7 +51,7 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
                     log(message_text)
-                    
+
                     if 'options' in message_text:
                         log('called options')
                         send_all_options(sender_id)
@@ -86,7 +86,7 @@ def webhook():
 
 def send_all_options(recipient_id):
     params = {
-        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+        "access_token": access_token
     }
     
     headers = {
@@ -141,7 +141,7 @@ def send_all_options(recipient_id):
         }
     })
 
-    r = requests.post("https://graph.facebook.com/v4.0/me/messages", params=params, headers=headers, data=data)
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
@@ -149,7 +149,7 @@ def send_all_options(recipient_id):
 
 def add_bank_account(recipient_id):
     params = {
-        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+        "access_token": access_token
     }
     
     headers = {
