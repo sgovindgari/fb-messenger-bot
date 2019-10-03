@@ -102,7 +102,7 @@ def add_bank_account(recipient_id):
                         {
                             "type":"web_url",
                             "url":"https://www.nerdwallet.com/blog/pay-off-debt/",
-                            "title":"Credit Card Debt Guide",
+                            "title":"Credit Card Guide",
                             "webview_height_ratio": "tall",
                         },
                         {
@@ -121,9 +121,6 @@ def add_bank_account(recipient_id):
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
-
-    time.sleep(75)
-    show_current_liabilities(recipient_id)
 
 
 def show_current_liabilities(recipient_id):
