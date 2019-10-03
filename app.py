@@ -250,10 +250,52 @@ def show_current_liabilities(recipient_id):
         str(origination_principal_amount - ytd_principal_paid)
     )
 
-
-
 def refinance_loan(recipient_id):
-    pass
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message":{
+            "attachment":{
+                "type":"template",
+                    "payload":{
+                        "template_type":"button",
+                        "text":"I found some refinancing options based on your current payments, payoff date and expenditures. Select to learn more.",
+                        "buttons":[{
+                            "type":"web_url",
+                            "url":"https://www.sofi.com/refinance-student-loan/",
+                            "title":"SoFi 2.05-6.48%",
+                            "webview_height_ratio": "tall",
+                        },
+                        {
+                            "type":"web_url",
+                            "url":"https://www.earnest.com/refinance-student-loans",
+                            "title":"Earnest 2.14-7.49%",
+                            "webview_height_ratio": "tall",
+                        },
+                        {
+                            "type":"web_url",
+                            "url":"https://www.commonbond.co/affiliate/student-loan-hero",
+                            "title":"Common Bond 2.14-8.24%",
+                            "webview_height_ratio": "tall",
+                        }]
+                }
+            }
+        }
+    })
+
+    r = requests.post("https://graph.facebook.com/v4.0/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
 
 
 def habit_forming(recipient_id):
