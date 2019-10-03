@@ -1,9 +1,11 @@
 import os
 import sys
 import json
+import time
 from datetime import datetime
 
 import requests
+from flask import jsonify
 from flask import Flask, request
 
 if sys.version_info[0] >= 3:
@@ -11,7 +13,11 @@ if sys.version_info[0] >= 3:
 
 app = Flask(__name__)
 
-access_token = None
+plaid_server = "https://peaceful-fortress-19275.herokuapp.com/liabilities"
+
+# hardcoding this token for now
+# TODO - use cookies to pass this back to messenger
+access_token = "access-sandbox-28e8315a-845e-42bb-8848-6683411cfc9f"
 
 
 @app.route('/', methods=['GET'])
@@ -59,6 +65,7 @@ def webhook():
 
     return "ok", 200
 
+
 def add_bank_account(recipient_id):
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -91,6 +98,18 @@ def add_bank_account(recipient_id):
                             "url":"https://peaceful-fortress-19275.herokuapp.com/",
                             "title":"Add account",
                             "webview_height_ratio": "tall",
+                        },
+                        {
+                            "type":"web_url",
+                            "url":"https://www.nerdwallet.com/blog/pay-off-debt/",
+                            "title":"Credit Card Debt Guide",
+                            "webview_height_ratio": "tall",
+                        },
+                        {
+                            "type":"web_url",
+                            "url":"https://www.creditkarma.com/advice/i/student-loans-101/",
+                            "title":"Student Loan Guide",
+                            "webview_height_ratio": "tall",
                         }]
                     }]
                 }
@@ -102,6 +121,51 @@ def add_bank_account(recipient_id):
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
+
+    time.sleep(75)
+    show_current_liabilities(recipient_id)
+
+
+def show_current_liabilities(recipient_id):
+    response = json.loads(requests.get(plaid_server))
+    credit_card_debt = list(response['liabilities']['credit'])[0]
+    student_debt = list(response['liabilities']['student'])[0]
+
+    # student debt data
+    expected_payoff_date = student_debt["expected_payoff_date"]
+    guarantor = student_debt["guarantor"]
+    interest_rate_percentage = float(student_debt["interest_rate_percentage"])
+    last_payment_amount = float(student_debt["last_payment_amount"])
+    loan_name = student_debt["loan_name"]
+    minimum_payment_amount = float(student_debt["minimum_payment_amount"])
+    origination_date = student_debt["origination_date"]
+    origination_principal_amount = float(student_debt["origination_principal_amount"])
+    outstanding_interest_amount = float(student_debt["outstanding_interest_amount"])
+    ytd_interest_paid = float(student_debt["ytd_interest_paid"])
+    ytd_principal_paid = float(student_debt["ytd_principal_paid"])
+
+    # credit card debt
+    aprs = list(credit_card_debt["aprs"])
+    last_statement_balance = float(credit_card_debt["last_statement_balance"])
+    last_payment_amount = float(credit_card_debt["last_payment_amount"])
+    minimum_payment_amount = float(credit_card_debt["minimum_payment_amount"])
+
+    cc_list = []
+    cc_debt = 0
+
+    for cc_balance in aprs:
+        apr_percentage = float(cc_balance["apr_percentage"])
+        apr_type = cc_balance["apr_type"]
+        balance_subject_to_apr = float(cc_balance["balance_subject_to_apr"])
+        interest_charge_amount = float(cc_balance["interest_charge_amount"])
+        total_debt += balance_subject_to_apr
+
+    total_debt = cc_debt + (origination_principal_amount - ytd_principal_paid)
+
+    send_message(
+        recipient_id,
+        "Your current credit card debt is " + str(cc_debt) + " and your student loan is " + str(origination_principal_amount - ytd_principal_paid)
+    )
 
 
 
