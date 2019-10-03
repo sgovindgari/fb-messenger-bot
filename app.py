@@ -57,6 +57,21 @@ def webhook():
 
     return "ok", 200
 
+def add_bank_account(recipient_id):
+    send_message_with_button(recipient_id, "Add an account", "https://peaceful-fortress-19275.herokuapp.com/", "Link")
+
+
+def refinance_loan(recipient_id):
+    pass
+
+
+def habit_forming(recipient_id):
+    pass
+
+def insights(recipient_id):
+    pass
+
+
 def send_message_with_button(recipient_id, message_text, button_url, button_text):
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
