@@ -122,8 +122,6 @@ def add_bank_account(recipient_id):
         log(r.status_code)
         log(r.text)
 
-    show_current_liabilities(recipient_id)
-
 # TODO - show liabilities
 # TODO - show workflows 
 
