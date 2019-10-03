@@ -86,7 +86,7 @@ def webhook():
 
 def send_all_options(recipient_id):
     params = {
-        "access_token": access_token
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
     
     headers = {
@@ -149,7 +149,7 @@ def send_all_options(recipient_id):
 
 def add_bank_account(recipient_id):
     params = {
-        "access_token": access_token
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
     
     headers = {
