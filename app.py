@@ -44,7 +44,12 @@ def webhook():
                     message_text = messaging_event["message"]["text"]  # the message's text
 
                     send_message(sender_id, "Welcome to Pixy. We help you lower and pay off your student loan and credit card debt faster.")
-                    send_message_with_button(sender_id, "To get started, please connect your loan/bank accounts", "https://peaceful-fortress-19275.herokuapp.com/", "Take me in")
+                    send_message_with_button(
+                        sender_id, 
+                        "To get started, please connect your loan/bank accounts", 
+                        "https://peaceful-fortress-19275.herokuapp.com/", 
+                        "Take me in"
+                    )
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
