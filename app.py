@@ -46,12 +46,7 @@ def webhook():
                     message_text = messaging_event["message"]["text"]  # the message's text
 
                     send_message(sender_id, "Welcome to Pixy. We help you lower and pay off your student loan and credit card debt faster.")
-                    send_message_with_button(
-                        sender_id, 
-                        "To get started, please connect your loan/bank accounts", 
-                        "https://peaceful-fortress-19275.herokuapp.com/", 
-                        "Take me in"
-                    )
+                    add_bank_account(sender_id)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -65,12 +60,53 @@ def webhook():
     return "ok", 200
 
 def add_bank_account(recipient_id):
-    send_message_with_button(
-        recipient_id, 
-        "Add an account", 
-        "https://peaceful-fortress-19275.herokuapp.com/", 
-        "Link"
-    )
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message":{
+            "attachment":{
+                "type":"template",
+                    "payload":{
+                        "template_type":"generic",
+                        "elements":[{
+                            "title":"Hi!",
+                            "image_url":"https://drive.google.com/file/d/13xIm-oBPI6xj6NIXS4QqQ-fxXqEQAzls/view?usp=sharing",
+                            "subtitle":"We help you manage your student loans and credit card debt.",
+                            "default_action": {
+                                "type": "web_url",
+                                "url": "https://peaceful-fortress-19275.herokuapp.com/",
+                                "webview_height_ratio": "tall",
+                            },
+                        "buttons":[{
+                            "type":"web_url",
+                            "url":"https://peaceful-fortress-19275.herokuapp.com/",
+                            "title":"Add account"
+                        },
+                        {
+                            "type":"postback",
+                            "title":"Start Chatting",
+                            "payload":"DEVELOPER_DEFINED_PAYLOAD"     
+                        }]
+                    }]
+                }
+            }
+        }
+    })
+
+    r = requests.post("https://graph.facebook.com/v4.0/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
+
 
 
 def refinance_loan(recipient_id):
@@ -107,7 +143,7 @@ def send_message_with_button(recipient_id, message_text, button_url, button_text
                             "type":"web_url",
                             "url":button_url,
                             "title":button_text,
-                            "webview_height_ratio": "full",
+                            "webview_height_ratio": "tall",
                         }]
                     }
             }
