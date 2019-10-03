@@ -11,6 +11,8 @@ if sys.version_info[0] >= 3:
 
 app = Flask(__name__)
 
+access_token = None
+
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -63,7 +65,12 @@ def webhook():
     return "ok", 200
 
 def add_bank_account(recipient_id):
-    send_message_with_button(recipient_id, "Add an account", "https://peaceful-fortress-19275.herokuapp.com/", "Link")
+    send_message_with_button(
+        recipient_id, 
+        "Add an account", 
+        "https://peaceful-fortress-19275.herokuapp.com/", 
+        "Link"
+    )
 
 
 def refinance_loan(recipient_id):
@@ -99,7 +106,8 @@ def send_message_with_button(recipient_id, message_text, button_url, button_text
                         "buttons":[{
                             "type":"web_url",
                             "url":button_url,
-                            "title":button_text
+                            "title":button_text,
+                            "webview_height_ratio": "full",
                         }]
                     }
             }
