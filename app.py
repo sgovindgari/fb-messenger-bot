@@ -315,23 +315,23 @@ def workflow(recipient_id):
     send_message(recipient_id, "Your account has been successfully connected! 🎉")
 
     send_message(recipient_id, "You can add more accounts anytime by sending \"add account\"")
-
+    time.sleep(10)
     send_message_with_picture(recipient_id, "https://media.giphy.com/media/zNSX3G2LztEyY/giphy.gif")
 
     send_message(recipient_id, "Building your financial picture...")
 
-    time.sleep(15)
+    time.sleep(20)
 
     insights(recipient_id)
 
-    time.sleep(15)
+    time.sleep(20)
 
     habit_forming(recipient_id)
-    time.sleep(15)
+    time.sleep(20)
 
     updated_debt(recipient_id)
 
-    time.sleep(15)
+    time.sleep(20)
 
     refinance_loan(recipient_id)
 
