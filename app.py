@@ -327,6 +327,7 @@ def workflow(recipient_id):
     time.sleep(15)
 
     habit_forming(recipient_id)
+    time.sleep(15)
 
     updated_debt(recipient_id)
 
