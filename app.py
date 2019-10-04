@@ -50,15 +50,14 @@ def webhook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
-                    log(message_text)
 
-                    if 'options' in message_text:
-                        log('called options')
-                        send_all_options(sender_id)
-                    else:
-                        log(message_text)
-                        send_message(sender_id, "Welcome to Pixy. We help you lower and pay off your student loan and credit card debt faster.")
-                        add_bank_account(sender_id)
+                    # if 'options' in message_text:
+                    #     log('called options')
+                    #     send_all_options(sender_id)
+                    # else:
+                    log(message_text)
+                    send_message(sender_id, "Welcome to Pixy. We help you lower and pay off your student loan and credit card debt faster.")
+                    add_bank_account(sender_id)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
