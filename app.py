@@ -320,19 +320,17 @@ def workflow(recipient_id):
 
     send_message(recipient_id, "Building your financial picture...")
 
-    time.sleep(20)
+    time.sleep(15)
 
     insights(recipient_id)
 
-    time.sleep(20)
+    time.sleep(15)
 
     habit_forming(recipient_id)
 
-    time.sleep(20)
-
     updated_debt(recipient_id)
 
-    time.sleep(25)
+    time.sleep(15)
 
     refinance_loan(recipient_id)
 
