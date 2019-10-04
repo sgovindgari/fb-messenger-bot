@@ -302,7 +302,32 @@ def habit_forming(recipient_id):
     pass
 
 def insights(recipient_id):
-    pass
+    # Monthly payments
+        # Total debt remaining
+        # Credit cards
+            # APR 
+            # Amount
+        # Student Loan
+            # Interest
+            # Amount remaining
+
+    # Balance so far
+    # Suggested amount to pay
+
+    send_message(recipient_id, 
+        "Breakdown of your debt: 27503.9\n\n" + 
+        "Credit cards: 2775.55\n" + 
+        "\tAPR: 15.24" + 
+        "\tAmount: 1562.32\n" + 
+        "\tAPR: 27.95\n"+
+        "\tAmount: 56.22\n"+
+        "\tAPR: 12.5\n"+
+        "\tAmount: 157.01\n"+
+        "\tAPR: 0\n"+
+        "\tAmount: 1000\n\n" + 
+        "Student Loans: 24728.35\n" + 
+        "Interest rate: 5.25%\n"
+    )
 
 
 def send_message_with_button(recipient_id, message_text, button_url, button_text):
